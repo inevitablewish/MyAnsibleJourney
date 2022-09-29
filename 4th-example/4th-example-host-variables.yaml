@@ -1,0 +1,22 @@
+# this playbook uses host based variables in the playbook
+#
+---
+ - name: Host based Variables to be used in playbook
+   hosts: workers
+   become: yes
+   tasks:
+     - name: Install package
+       yum:
+         name: "{{mypackage}}"
+         state: present
+     
+     - name: Start Service
+       service:
+         name: "{{myservice}}"
+         state: started
+
+     - name: Display msg
+       debug:
+         msg: "{{ mypackage }} is in mypackage var, {{ myservice }} is in myservice var"
+        
+##########################################################
