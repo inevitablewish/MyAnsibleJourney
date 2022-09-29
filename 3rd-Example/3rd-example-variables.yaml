@@ -1,0 +1,17 @@
+# This playbook shows how to use variables in the playbook
+#
+---
+ - name: Using variables in the playbook
+   hosts: workers
+   become: yes
+   vars:
+     - myvar1: cron
+       myvar2: restarted
+
+   tasks:
+     - name: This tasks use the variables to run the services
+       service:
+         name: "{{myvar1}}"
+         state: "{{myvar2}}"
+#########################################################
+
