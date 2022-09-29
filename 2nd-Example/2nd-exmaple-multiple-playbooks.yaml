@@ -1,0 +1,32 @@
+# This example contains multiple playbooks in one YAML File
+# First playbook add the user and set the paddword
+# Second playbook displays the message
+---
+ - name: This playbook creates a user in worker1
+   hosts: worker1
+   become: yes
+   tasks:
+     - name: "Adding UserX account to worker1"
+       user:
+         name: userX
+         state: present
+         password: "{{'MyAnsibleJourney'| password_hash('sha512')}}"
+
+     - name: "Creating project Directory"
+       file:
+         name: MyAnsibleProject
+         state: directory
+         owner: userX
+         mode: 0777
+ - name: "This playbook displays the message"
+   hosts: worker2
+   tasks:
+     - name: This task displays the message
+       debug:
+         msg: This message is being displayed by 2nd playbook in 2nd-example-multiple-playbooks.yaml
+
+
+###########################################################
+         
+
+
