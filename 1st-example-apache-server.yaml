@@ -1,0 +1,25 @@
+################################################################
+---
+ - name: This playbook runs apache server on worker nodes. This is first example of Ansible Playbook
+   hosts: workers # This reflects the hosts where Apache Server is going to be installed
+   become: yes # this gives sudo permissions to the tasks running below
+   tasks:
+     - name: This task updates the yum package manager
+       command: "yum update -y"
+
+     - name: This tasks installs the httpd/apache server to workers
+       yum:
+         name: httpd
+         state: latest
+     
+     - name: Starting the httpd service
+       service:
+         name: httpd
+         state: started
+         enabled: yes
+     - name: Copying the webpage to root directory of httpd/Apache
+       copy:
+         src: webpage.html
+         dest: /var/www/html/index.html
+
+################ This ends the playbook ##########################
