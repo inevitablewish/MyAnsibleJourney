@@ -1,0 +1,19 @@
+# This example reflects using ANsible Facts for memory before installation
+#
+---
+ - name: Check memory available before installation
+   hosts: workers
+   become: yes
+   tasks:
+     - name: Installing my-sql server using yum
+       yum:
+         name: mysql
+         state: present
+       when: ansible_pkg_mgr == "yum" and ansible_memtotal_mb>=500
+
+     - name: Installing my-sql server using apt
+       apt:
+         name: mysql
+         state: present
+       when: ansible_pkg_mgr == "apt" and ansible_memtotal_mb>=500
+
