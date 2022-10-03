@@ -1,0 +1,26 @@
+--- 
+ - name: User management with Loop
+   hosts: worker1
+   become: yes
+   tasks:
+           - name: Lets add some user groups
+             group:
+                     name: "{{item}}"
+                     state: present
+             loop: 
+                   - developers
+                   - testers
+                   - operations
+
+           - name: Lets add user accounts with loop
+             user:
+                     name: "{{item.uname}}" 
+                     state: present
+                     uid: "{{item.uid}}" 
+                     shell: "{{item.ushell}}"
+                     group: "{{item.ugroup}}"
+             loop:
+                   - {"uname":"userX","uid":"3030","ushell":"/bin/bash","ugroup":"developers"}  
+                   - {"uname":"userY","uid":"4040","ushell":"/bin/false","ugroup":"testers"}  
+                   - {"uname":"userZ","uid":"5050","ushell":"/sbin/nologin","ugroup":"operations"}
+

@@ -1,0 +1,24 @@
+---
+ - name: THis playbook reflects the differece between Loop and With_items
+   hosts: worker1
+   become: yes
+   tasks:
+         - name: A simple list with WITH_ITEMS
+           debug: 
+                msg: My lucky numbers is {{ item }}
+           with_items: 
+                        - 1
+                        - 2
+                        - [3,9]
+                        - 4 
+                        - 'five'
+
+         - name: A simple list loop
+           debug:
+                msg: My lucky numbers is {{ item }}
+           loop:  
+                        - 1
+                        - 2
+                        - [3,4]
+                        - 'five'
+                       

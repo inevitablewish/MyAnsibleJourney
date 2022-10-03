@@ -1,0 +1,15 @@
+---
+ - name: This playbook reflects the usage of loops
+   hosts: workers
+   become: yes
+   tasks:
+     - name: Restart, Stop or Start a Service
+       service:
+         name: "{{item}}"
+         state: restarted
+       
+       loop:
+         - sshd
+         - docker
+         - crond
+         - httpd
