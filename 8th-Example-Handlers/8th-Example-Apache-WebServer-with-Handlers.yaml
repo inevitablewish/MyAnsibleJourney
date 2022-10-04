@@ -1,0 +1,41 @@
+#### Running Webservr Apache on port no 8080 instead of port no 80  With Handlers for restart apache2 service if change happens in Installation or configuration
+### Use of LineInFile   Module
+
+---
+ - name: This example reflects using handlers with APacha webserver
+   hosts: workers
+   become: yes
+   tasks:
+     - name: Installing Apache package
+       yum:
+         name: httpd
+         state: latest
+         update_cache: yes
+       notify: Stat Service Apache2
+
+       # The following section requires few confugratoins to be changed in Apache
+       # Following paths are being updated
+       # /etc/httpd/conf/httpd.conf
+       #  /etc/httpd/sites-enabled/000-default.conf
+       #
+     - name: Ensure Listen to port 8080 instead of port 80
+       # lifeinfile helps to replace text in the above confguration files
+       lineinfile:
+         path: /etc/httpd/conf/httpd.conf
+         regexp: '^Listen'
+         line: Listen 8080
+       notify: Start Service Apache2
+
+
+
+     - name: Copy webpage to /var/www/html/
+       copy:
+         src: webpage.html
+         dest: /var/www/html/index.html
+
+   handlers:
+     - name: Start Service Apache2
+       service:
+         name: httpd
+         state: restarted
+         enabled: yes

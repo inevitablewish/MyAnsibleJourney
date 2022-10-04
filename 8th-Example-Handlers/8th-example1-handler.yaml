@@ -1,0 +1,23 @@
+# In this example a user is deleted along with the home directory.
+# If the task deleting user does not run, the handler will not delete the home directory
+
+---
+ - name: Handler Example
+   hosts: workers
+   become: yes
+   tasks:
+     - name: Delete user account
+       user:
+         name: userX
+         state: absent
+       notify: deleteHome
+
+     - name: Print Message
+       debug:
+         msg: This is test message
+   
+   handlers:
+     - name: deleteHome
+       file:
+         name: /home/userX
+         state: absent
