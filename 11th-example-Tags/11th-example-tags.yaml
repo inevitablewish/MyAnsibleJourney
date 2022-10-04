@@ -1,0 +1,24 @@
+---
+ - name: This playbook demostrate using of tags
+   hosts: workers
+   become: yes
+   tasks:
+     - name: Task1
+       debug:
+         msg: This is Task blue
+       tags: blue
+
+     - name: Task2
+       debug:
+         msg: This is Task2 red
+       tags: red
+     - name: Task1
+       debug:
+         msg: This is Task3 blue
+       tags: blue
+     - name: Task2
+       debug:
+         msg: This is Task4 green 
+       tags:
+         - green
+         - blue

@@ -1,0 +1,52 @@
+---
+ - name: Setting up webserver using APACHE
+   hosts: workers 
+   become: yes
+   tasks:
+     - name: Installing Apache webserver package on Debian family node
+       apt: 
+          name: apache2
+          state: present 
+          update_cache: yes
+       when: ansible_os_family == "Debian" or ansible_memtotal_mb >= 5000
+       tags: 
+        - installation
+
+     - name: Installing Apache webserver package on RedHat family node
+       yum:  
+          name: httpd 
+          state: present
+       when: ansible_os_family=="RedHat"
+       tags: 
+        - installation
+
+     - name: Start the webserver by validating apache2 service
+       service:
+          name: apache2
+          state: started
+          enabled: yes
+       when: ansible_os_family=="Debian"
+       tags:
+        - service_restart
+
+     - name: Start the webserver by validating HTTPD service
+       service:
+          name: httpd
+          state: started
+          enabled: yes
+       when: ansible_os_family=="RedHat"
+       tags: 
+        - service_restart 
+
+     - name: Placing webserver to document root
+       copy: 
+          src: webpage.html
+          dest: /var/www/html/index.html
+
+     - name: A sample task to confirm playbook running good
+       debug:
+          msg: "A sample task to confirm playbook running good"
+       tags:
+        - service_restart
+        - installation
+
