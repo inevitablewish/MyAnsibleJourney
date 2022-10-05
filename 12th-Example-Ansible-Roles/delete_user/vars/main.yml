@@ -1,0 +1,4 @@
+---
+# vars file for delete_user
+username: userK
+userhome: /home/userK

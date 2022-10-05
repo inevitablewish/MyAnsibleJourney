@@ -1,0 +1,11 @@
+---
+# tasks file for delete_user
+ - name: Delete user account {{username}}
+   user:
+     name: "{{username}}"
+     state: present
+   notify: deletehome
+
+ - name: Example Task
+   debug:
+     msg: This is Example Task

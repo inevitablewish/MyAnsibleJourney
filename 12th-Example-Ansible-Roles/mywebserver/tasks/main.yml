@@ -1,0 +1,34 @@
+---
+# tasks file for mywebserver
+   - name: "installing httpd"
+     yum:
+       name: "httpd"
+       state: present
+     notify: "server restart"
+
+   - name: "Creating Document root"
+     file:
+       state: directory
+       dest: "{{ doc_root }}"
+
+   - name: "Configuration File"
+     template:
+       src: webserver.j2
+       dest: "/etc/httpd/conf/new_conf.conf"
+     notify: "server restart"
+
+   - name: Ensure Listen 8080 instead of Listen 80
+     lineinfile:
+       path: /etc/httpd/conf/httpd.conf
+       regexp: '^Listen'
+       line: Listen {{port_number}} 
+     notify: "server restart"
+
+
+   - name: "Copy webpages"
+     copy:
+       src: index.html
+       dest: "{{ doc_root }}/index.html"
+
+
+
