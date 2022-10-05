@@ -1,0 +1,38 @@
+- hosts: workers
+  become: yes
+  vars_files:
+         - variables.yaml
+  tasks:
+        - name: "installing httpd"
+          package:
+              name: "httpd"
+              state: present
+        
+        - name: "Creating Document root"
+          file:
+              state: directory
+              dest: "{{ doc_root }}"
+  
+        - name: "Configuration File"
+          template:
+             src: "./webserver.j2"
+             dest: "/etc/httpd/conf/new_conf.conf"
+          notify: "server restart"
+
+        - name: "Copy webpages"
+          copy:
+              src: webpage.html
+              dest: "{{ doc_root }}/index.html"
+  
+        - name: "web Server start"
+          service:
+              name: "httpd"
+              state: started
+              enabled: yes
+        
+                  
+  handlers:
+        - name: "server restart"
+          service:
+               name: "httpd"
+               state: restarted
