@@ -1,0 +1,7 @@
+---
+ - name: This playbook reflects usage of roles
+   hosts: workers
+   become: yes
+   roles:
+     - delete_user
+   

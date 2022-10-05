@@ -1,0 +1,6 @@
+---
+ - name: This example reflects the usage of Ansible roles
+   hosts: workers
+   become: yes
+   roles:
+     - mywebserver
