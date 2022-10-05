@@ -1,0 +1,12 @@
+---
+ - name: Setting up motd with templates
+   hosts: workers
+   become: yes
+   vars_files:
+     - myvars.yaml
+   tasks:
+           - name: Setting up MOTD - message of the day
+             template: 
+                  src: mytemplate.j2
+                  dest: /etc/motd 
+
