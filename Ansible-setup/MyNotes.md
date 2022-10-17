@@ -5,7 +5,7 @@ Public key was created through AWS Console and private key was used to access pu
 After successfully ssh to Public Instance, Attempt to access two private instances is made.
 This is done by copying the private key *.pem from local machine to public instance.
 
-scp -i terraform.pem ./terraform.pem ec2-user@ec2-54-252-156-9.ap-southeast-2.compute.amazonaws.com:/home/ec2-user/
+scp -i terraform.pem ./terraform.pem ec2-user@<IP-ADDRESS-EC2-INSTANCE>.ap-southeast-2.compute.amazonaws.com:/home/ec2-user/
 
 Once copied, ssh access is attempted to private instances.
 
